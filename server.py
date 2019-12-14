@@ -90,8 +90,8 @@ def add_task():
     db.session.add(new_task)
     db.session.commit()
     
-    all_tasks = Task.query.filter_by(user_id = session['user_id'])
-    return render_template('/tasks.html', tasks=all_tasks)
+    tasks = Task.query.filter_by(user_id = session['user_id'])
+    return render_template('/tasks.html', tasks=tasks)
 
 
 if __name__ == "__main__":
