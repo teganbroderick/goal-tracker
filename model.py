@@ -1,5 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 
+# Instantiate a SQLAlchemy object
+db = SQLAlchemy()
+
 
 class User(db.Model):
     """Data model for a user."""
@@ -28,7 +31,7 @@ class Task(db.Model):
     task_id = db.Column(db.Integer, 
                         primary_key=True,   
                         autoincrement=True)
-    task_id = db.Column(db.Integer, 
+    user_id = db.Column(db.Integer, 
                         db.ForeignKey('users.user_id'))
     task_name = db.Column(db.String(50), nullable=False)
     task_description = db.Column(db.String(100), nullable=False)
