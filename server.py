@@ -12,6 +12,15 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
+@app.route('/')
+def index():
+    """Verify whether session exists, render index page"""
+    if 'user_id' in session: #if session exists
+        user = User.query.filter_by(user_id=session['user_id']).first()
+        maps = Map.query.filter_by(user_id=session['user_id']).all()
+        return render_template("profile.html", user=user, maps=maps)
+    else:
+        return render_template("index.html")
 
 
 
