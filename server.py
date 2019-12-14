@@ -18,8 +18,8 @@ def index():
     """Verify whether session exists, render index page"""
     if 'user_id' in session: #if session exists
         user = User.query.filter_by(user_id=session['user_id']).first()
-        maps = Map.query.filter_by(user_id=session['user_id']).all()
-        return render_template("profile.html", user=user, maps=maps)
+        tasks = Task.query.filter_by(user_id=session['user_id']).all()
+        return render_template("tasks.html", user=user, tasks=tasks)
     else:
         return render_template("index.html")
 
@@ -44,7 +44,7 @@ def signup_process():
         user = User.query.filter_by(email=email).first() #get user object
         session['user_id'] = user.user_id #add user to session  
         flash("Logged in!")
-        return render_template("profile.html", user=user, tasks=user.tasks)
+        return render_template("tasks.html", user=user, tasks=user.tasks)
     else: 
         flash("A user with that email address already exists.")
         return redirect("/")
@@ -76,7 +76,7 @@ def login_process():
         #add user to session
         session['user_id'] = user.user_id
         flash("Logged in!")
-        return render_template("profile.html", user=user)
+        return render_template("tasks.html", user=user, tasks=user.tasks)
 
 
 @app.route('/add_task', methods=["POST"])
@@ -92,7 +92,7 @@ def add_task():
     db.session.commit()
     
     tasks = Task.query.filter_by(user_id = session['user_id'])
-    return render_template('/tasks.html', tasks=tasks)
+    return render_template('tasks.html', tasks=tasks)
 
 
 if __name__ == "__main__":
