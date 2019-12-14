@@ -35,9 +35,15 @@ def signup_process():
     user = User.query.filter_by(email=email).first() #get user via entered email address
 
     if user == None: #if user is not in the users table
-        helpers.add_user_to_database(fname, lname, email, password) #Add user to db
-        user = helpers.user_login(email) #Add user to session
-        return render_template("profile.html", user=user, maps=user.maps)
+        #add user to database
+        user_info = User(fname=fname, lname=lname, email=email, password=password)
+        db.session.add(user_info)
+        db.session.commit()
+
+        user = User.query.filter_by(email=email).first() #get user object
+        session['user_id'] = user.user_id #add user to session  
+        flash("Logged in!")
+        return render_template("profile.html", user=user, tasks=user.tasks)
     else: 
         flash("A user with that email address already exists.")
         return redirect("/")
@@ -77,10 +83,15 @@ def add_task():
     """add task to list of tasks"""
 
     task_description = request.form.get("task_description")
+
+    new_task = Task(user_id=user_id, 
+                    task_name=task_name, 
+                    task_description=task_description)
+    db.session.add(new_task)
+    db.session.commit()
     
-    helpers.add_map_to_database(session['user_id'], map_name, map_description)
     all_tasks = Task.query.filter_by(user_id = session['user_id'])
-    return render_template('/tasks.html', all_tasks=all_tasks)
+    return render_template('/tasks.html', tasks=all_tasks)
 
 
 if __name__ == "__main__":

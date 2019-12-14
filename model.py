@@ -20,24 +20,25 @@ class User(db.Model):
         return f"<User user_id={self.user_id} fname={self.fname} lname={self.lname} email={self.email}>"
 
 
-class Goal(db.Model):
+class Task(db.Model):
     """Data model for a goal."""
 
-    __tablename__ = "goals"
+    __tablename__ = "tasks"
 
-    goal_id = db.Column(db.Integer, 
+    task_id = db.Column(db.Integer, 
                         primary_key=True,   
                         autoincrement=True)
-    user_id = db.Column(db.Integer, 
+    task_id = db.Column(db.Integer, 
                         db.ForeignKey('users.user_id'))
-    goal_description = db.Column(db.String(100), nullable=True)
-    goal_active = db.Column(db.Boolean, default=False, nullable=False)
+    task_name = db.Column(db.String(50), nullable=False)
+    task_description = db.Column(db.String(100), nullable=False)
+    task_active = db.Column(db.Boolean, default=True, nullable=False)
 
 
     def __repr__(self):
         """Return a human-readable representation of a goal"""
 
-        return f"<Goal goal_id={self.task_id} user_id={self.user_id} goal_description={self.goal_description}>"
+        return f"<Task task_id={self.task_id} user_id={self.user_id} task_name={self.task_name} task_description={self.task_description}>"
 
 def connect_to_db(app, db_uri="postgresql:///todo"):
     """Connect the database to the Flask app"""
