@@ -42,9 +42,10 @@ def signup_process():
         db.session.commit()
 
         user = User.query.filter_by(email=email).first() #get user object
+        tasks = Task.query.filter_by(user_id=session['user_id']).all() #get tasks
         session['user_id'] = user.user_id #add user to session  
         flash("Logged in!")
-        return render_template("tasks.html", user=user, tasks=user.tasks)
+        return render_template("tasks.html", user=user, tasks=tasks)
     else: 
         flash("A user with that email address already exists.")
         return redirect("/")
@@ -75,17 +76,19 @@ def login_process():
     else:
         #add user to session
         session['user_id'] = user.user_id
+        tasks = Task.query.filter_by(user_id=session['user_id']).all()
         flash("Logged in!")
-        return render_template("tasks.html", user=user, tasks=user.tasks)
+        return render_template("tasks.html", user=user, tasks=tasks)
 
 
 @app.route('/add_task', methods=["POST"])
 def add_task():
     """add task to list of tasks"""
 
+    task_name = request.form.get("task_name")
     task_description = request.form.get("task_description")
 
-    new_task = Task(user_id=user_id, 
+    new_task = Task(user_id=session['user_id'], 
                     task_name=task_name, 
                     task_description=task_description)
     db.session.add(new_task)
