@@ -4,9 +4,11 @@
     <title>Task Tracker</title>
 </head>
 <body>
-    <h1>Add a Task</h1>
+    <h3>Hello, {{ user.fname }} {{ user.lname }}!</h3>
+
+    <h1>Add a Goal</h1>
     <form action="/add_task" method="POST">
-        Task: <input type="text" name="task_name"><br>
+        Goal: <input type="text" name="task_name"><br>
         <!-- Task Description: <input type="text" name="task_description"><br> -->
         <input type="submit" value="Submit">
     </form>
@@ -14,10 +16,10 @@
     <h1>Your tasks</h1>
     {% for task in tasks %}
         <h3> {{ task.task_name }} </h3>
-        <p>Edit task</p>
+        <p>Edit Goal</p>
         <form action="/edit_task" method="POST">
             <input type="hidden" name="task_name" value="{{ task.task_name }}">
-            New task name: <input type="text" name="new_task_name"><br>
+            New Goal name: <input type="text" name="new_task_name"><br>
             <input type="submit" value="Submit">
         </form>
     {% endfor %}

@@ -98,8 +98,9 @@ def add_task():
     else:
         flash("Goal already in your list")
     
+    user = User.query.filter_by(user_id=session['user_id']).first()
     tasks = Task.query.filter_by(user_id=session['user_id']).all()
-    return render_template('tasks.html', tasks=tasks)
+    return render_template('tasks.html', tasks=tasks, user=user)
 
 
 @app.route('/edit_task', methods=["POST"])
@@ -118,8 +119,9 @@ def edit_task():
 
     db.session.commit()
 
+    user = User.query.filter_by(user_id=session['user_id']).first()
     tasks = Task.query.filter_by(user_id = session['user_id'])
-    return render_template('tasks.html', tasks=tasks)
+    return render_template('tasks.html', tasks=tasks, user=user)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
