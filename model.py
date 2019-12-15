@@ -34,14 +34,12 @@ class Task(db.Model):
     user_id = db.Column(db.Integer, 
                         db.ForeignKey('users.user_id'))
     task_name = db.Column(db.String(50), nullable=False)
-    task_description = db.Column(db.String(100), nullable=False)
-    task_active = db.Column(db.Boolean, default=True, nullable=False)
 
 
     def __repr__(self):
         """Return a human-readable representation of a goal"""
 
-        return f"<Task task_id={self.task_id} user_id={self.user_id} task_name={self.task_name} task_description={self.task_description}>"
+        return f"<Task task_id={self.task_id} user_id={self.user_id} task_name={self.task_name}>"
 
 def connect_to_db(app, db_uri="postgresql:///todo"):
     """Connect the database to the Flask app"""

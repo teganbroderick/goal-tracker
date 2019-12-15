@@ -42,8 +42,8 @@ def signup_process():
         db.session.commit()
 
         user = User.query.filter_by(email=email).first() #get user object
+        session['user_id'] = user.user_id #add user to session 
         tasks = Task.query.filter_by(user_id=session['user_id']).all() #get tasks
-        session['user_id'] = user.user_id #add user to session  
         flash("Logged in!")
         return render_template("tasks.html", user=user, tasks=tasks)
     else: 
@@ -86,17 +86,40 @@ def add_task():
     """add task to list of tasks"""
 
     task_name = request.form.get("task_name")
-    task_description = request.form.get("task_description")
 
-    new_task = Task(user_id=session['user_id'], 
-                    task_name=task_name, 
-                    task_description=task_description)
-    db.session.add(new_task)
-    db.session.commit()
+    task_to_verify = Task.query.filter_by(user_id=session['user_id'], 
+                    task_name=task_name).first()
     
-    tasks = Task.query.filter_by(user_id = session['user_id'])
+    if task_to_verify == None: #if task not in db
+        new_task = Task(user_id=session['user_id'], 
+                    task_name=task_name)
+        db.session.add(new_task)
+        db.session.commit()
+    else:
+        flash("Goal already in your list")
+    
+    tasks = Task.query.filter_by(user_id=session['user_id']).all()
     return render_template('tasks.html', tasks=tasks)
 
+
+@app.route('/edit_task', methods=["POST"])
+def edit_task():
+    """edit task in list of tasks"""
+
+    task_name = request.form.get("task_name")
+    print(task_name)
+    new_task_name = request.form.get("new_task_name")
+    print(new_task_name)
+
+    #find task in db
+    task_to_change = Task.query.filter(Task.task_name == task_name).first()
+    print(task_to_change)
+    task_to_change.task_name = new_task_name
+
+    db.session.commit()
+
+    tasks = Task.query.filter_by(user_id = session['user_id'])
+    return render_template('tasks.html', tasks=tasks)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
