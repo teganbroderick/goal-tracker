@@ -5,6 +5,7 @@
 </head>
 <body>
     <h3>Hello, {{ user.fname }} {{ user.lname }}!</h3>
+    <a class="nav-link" href="/logout">Log Out</a>
 
     <h1>Add a Goal</h1>
     <form action="/add_task" method="POST">
@@ -13,16 +14,16 @@
         <input type="submit" value="Submit">
     </form>
 
-    <h1>Your tasks</h1>
+    <h1>Your Goals</h1>
     {% for task in tasks %}
         <h3> {{ task.task_name }} </h3>
-        <p>Edit Goal</p>
+        <p style="font-size:10px">To edit goal, enter a new goal name</p>
         <form action="/edit_task" method="POST">
             <input type="hidden" name="task_name" value="{{ task.task_name }}">
-            New Goal name: <input type="text" name="new_task_name"><br>
+            <input type="text" name="new_task_name"><br>
             <input type="submit" value="Submit">
         </form>
     {% endfor %}
-    <a class="nav-link" href="/logout">Log Out</a>
+
 </body>
 </html>
