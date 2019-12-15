@@ -4,7 +4,7 @@ Goal tracker lets you sign up/log in, add goals to a list, and then edit them.
 
 Tech Stack: Python, HTML, CSS, Flask, Jinja, PostgreSQL, SQLAlchemy
 
-## <a name="installation"></a>Installation
+## Installation
 
 ### Prerequisites
 
@@ -42,3 +42,6 @@ Run the app from the command line.
 ```
 $ python server.py
 ```
+
+## Features for version 2.0
+Add styling, add verification for user input during sign-up process, add feature to delete goals.
